@@ -14,12 +14,12 @@ class VendingMachine:
         }
 
     def display_items(self):
-        print("Available items:")
+        print("\n\tAvailable items:")
         for category, items in self.items.items():
-            print(f"\n{category.capitalize()}:")
+            print(f"\n\t{category.capitalize()}:")
             for item in items:
                 print(
-                    f"{item['name']} - ${item['price']} - {item.get('weight', item.get('volume'))} - Quantity: {item['quantity']}"
+                    f"\t{item['name']} - ${item['price']} - {item.get('weight', item.get('volume'))} - Quantity: {item['quantity']}"
                 )
 
     def add_item(self, category, name, price, attribute):
@@ -30,7 +30,7 @@ class VendingMachine:
             volume = input("Enter volume: ")
             self.items[category][name] = {"price": price, "volume": volume}
         else:
-            print("Invalid category. Please try again.")
+            print("\n\tInvalid category. Please try again.")
 
 
     def remove_item(self, category, name):
@@ -68,10 +68,11 @@ class VendingMachine:
 if __name__ == "__main__":
     vending_machine = VendingMachine()
 
+    print("\n\t##########################")
+    print("\tVENDING MACHINE SIMULATION")
+    print("\t##########################")
+
     while True:
-        print("\n\t##########################")
-        print("\tVENDING MACHINE SIMULATION")
-        print("\t##########################")
         print("\nWhat would you like to do?")
         print("1. Display available items")
         print("2. Add an item")
@@ -87,6 +88,9 @@ if __name__ == "__main__":
 
         elif choice == "2":
             category = input("Enter category (snacks/beverages): ")
+            while category.lower() != "snacks" and category.lower() != "beverages":
+                print("\n\tInvalid category. Please try again.")
+                category = input("\nEnter category (snacks/beverages): ")
             name = input("Enter name: ")
             price = float(input("Enter price: "))
             attribute = "weight" if category == "snacks" else "volume"
@@ -112,5 +116,5 @@ if __name__ == "__main__":
             break
 
         else:
-            print("Invalid choice. Please try again.")
+            print("\n\tInvalid choice. Please try again.")
 
