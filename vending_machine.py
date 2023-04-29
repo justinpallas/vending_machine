@@ -14,6 +14,7 @@ class VendingMachine:
         }
 
     def display_items(self):
+        """display all available items"""
         print("\n\tAvailable items:")
         for category, items in self.items.items():
             print(f"\n\t{category.capitalize()}:")
@@ -23,6 +24,7 @@ class VendingMachine:
                 )
 
     def add_item(self, category, name, price, attribute):
+        """add an item to the vending machine"""
         if category.lower() == "snacks":
             weight = input("Enter weight: ")
             self.items[category][name] = {"price": price, "weight": weight}
@@ -34,6 +36,7 @@ class VendingMachine:
 
 
     def remove_item(self, category, name):
+        """remove an item from the vending machine"""
         for i, item in enumerate(self.items[category]):
             if item["name"] == name:
                 del self.items[category][i]
@@ -43,6 +46,7 @@ class VendingMachine:
             print(f"{name.capitalize()} not found in {category}.")
 
     def restock_item(self, category, name):
+        """restock a certain item in the vending machine"""
         for item in self.items[category]:
             if item["name"] == name:
                 item["quantity"] = 10
@@ -52,6 +56,7 @@ class VendingMachine:
             print(f"{name.capitalize()} not found in {category}.")
 
     def purchase_item(self, category, name):
+        """purchase an item from the vending machine"""
         for item in self.items[category]:
             if item["name"] == name:
                 if item["quantity"] > 0:
