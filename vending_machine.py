@@ -1,3 +1,5 @@
+"""A simple command line simulation of a vending machine"""
+
 class VendingMachine:
     def __init__(self):
         # initializing self.items and adding sample items
@@ -89,10 +91,10 @@ class VendingMachine:
 
 def get_category():
     """prompt the user for a category and check if it is valid"""
-    category = input("Enter category (snacks/beverages): ") 
+    category = input("Enter category (snacks/beverages): ").lower() 
     while category != "snacks" and category != "beverages":
         print("\n\tInvalid category. Please try again.")
-        category = input("\nEnter category (snacks/beverages): ")
+        category = input("\nEnter category (snacks/beverages): ").lower()
     return category
 
 if __name__ == "__main__":
