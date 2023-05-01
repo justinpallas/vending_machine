@@ -2,14 +2,14 @@ class VendingMachine:
     def __init__(self):
         self.items = {
             "snacks": [
-                {"name": "chips", "price": 1.50, "weight": "50g", "quantity": 10},
-                {"name": "candy", "price": 0.75, "weight": "25g", "quantity": 10},
-                {"name": "granola bar", "price": 1.00, "weight": "35g", "quantity": 10},
+                {"name": "chips", "price": 1.50, "weight": 50, "quantity": 10},
+                {"name": "candy", "price": 0.75, "weight": 25, "quantity": 10},
+                {"name": "granola bar", "price": 1.00, "weight": 35, "quantity": 10},
             ],
             "beverages": [
-                {"name": "soda", "price": 2.00, "volume": "350ml", "quantity": 10},
-                {"name": "water", "price": 1.00, "volume": "500ml", "quantity": 10},
-                {"name": "juice", "price": 1.50, "volume": "250ml", "quantity": 10},
+                {"name": "soda", "price": 2.00, "volume": 350, "quantity": 10},
+                {"name": "water", "price": 1.00, "volume": 500, "quantity": 10},
+                {"name": "juice", "price": 1.50, "volume": 250, "quantity": 10},
             ],
         }
 
@@ -18,16 +18,15 @@ class VendingMachine:
         print("\n\tAvailable items:")
         for category, items in self.items.items():
             print(f"\n\t{category.capitalize()}:")
+            attribute_suffix = "g" if category == "snacks" else "ml"
             for item in items:
                 print(
-                    f"\t{item['name']} - ${item['price']} - {item.get('weight', item.get('volume'))} - Quantity: {item['quantity']}"
+                    f"\t{item['name']} - ${item['price']} - {item.get('weight', item.get('volume'))}{attribute_suffix} - Quantity: {item['quantity']}"
                 )
 
     def add_item(self, category, name, price, attribute, attribute_value):
         """add an item to the vending machine"""
-        attribute_suffix = "g" if category == "snacks" else "ml"
-        attribute_string = f"{attribute_value}{attribute_suffix}"
-        self.items[category].append({"name": name,"price": price, f"{attribute}": attribute_string, "quantity": 10})
+        self.items[category].append({"name": name,"price": price, f"{attribute}": attribute_value, "quantity": 10})
         print(f"\n\t{name.capitalize()} added to {category}!")
 
 
@@ -36,10 +35,10 @@ class VendingMachine:
         for i, item in enumerate(self.items[category]):
             if item["name"] == name:
                 del self.items[category][i]
-                print(f"{name.capitalize()} removed from {category}!")
+                print(f"\n\t{name.capitalize()} removed from {category}!")
                 break
         else:
-            print(f"{name.capitalize()} not found in {category}.")
+            print(f"\n\t{name.capitalize()} not found in {category}.")
 
     def restock_item(self, category, name):
         """restock a certain item in the vending machine"""
@@ -106,8 +105,8 @@ if __name__ == "__main__":
 
         elif choice == "2":
             if vending_machine.is_full() == False:
-                category = input("Enter category (snacks/beverages): ")
-                while category.lower() != "snacks" and category.lower() != "beverages":
+                category = input("Enter category (snacks/beverages): ").lower()
+                while category != "snacks" and category != "beverages":
                     print("\n\tInvalid category. Please try again.")
                     category = input("\nEnter category (snacks/beverages): ")
                 attribute = "weight" if category == "snacks" else "volume"
@@ -153,7 +152,7 @@ if __name__ == "__main__":
                 print("\n\tThere are no items in the vending machine. Please add an item first!")
 
         elif choice == "6":
-            print("Exiting program.")
+            print("\n\tExiting program.")
             break
 
         else:
