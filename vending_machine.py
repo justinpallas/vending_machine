@@ -53,7 +53,7 @@ class VendingMachine:
         for item in self.items[category]:
             if item["name"] == name:
                 item["quantity"] = 10
-                print(f"{name.capitalize()} restocked!")
+                print(f"\n\t{name.capitalize()} restocked!")
                 break
         else:
             print(f"{name.capitalize()} not found in {category}.")
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                         attribute_value = int(input(f"Enter {attribute}: "))
                         break
                     except ValueError:
-                        print(f"\n\tInvalid {attribute}. Please enter a number!")
+                        print(f"\n\tInvalid {attribute}. Please enter a whole number!")
                 vending_machine.add_item(category, name, price, attribute, attribute_value)
             else:
                 print("\n\tThe vending machine is already full. Please remove an item before adding another one!")
