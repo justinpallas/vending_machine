@@ -23,16 +23,12 @@ class VendingMachine:
                     f"\t{item['name']} - ${item['price']} - {item.get('weight', item.get('volume'))} - Quantity: {item['quantity']}"
                 )
 
-    def add_item(self, category, name, price, attribute):
+    def add_item(self, category, name, price, attribute, attribute_value):
         """add an item to the vending machine"""
-        if category.lower() == "snacks":
-            weight = input("Enter weight: ")
-            self.items[category][name] = {"price": price, "weight": weight}
-        elif category.lower() == "beverages":
-            volume = input("Enter volume: ")
-            self.items[category][name] = {"price": price, "volume": volume}
-        else:
-            print("\n\tInvalid category. Please try again.")
+        attribute_suffix = "g" if category == "snacks" else "ml"
+        attribute_string = f"{attribute_value}{attribute_suffix}"
+        self.items[category].append({"name": name,"price": price, f"{attribute}": attribute_string, "quantity": 10})
+        print(f"\n\t{name.capitalize()} added to {category}!")
 
 
     def remove_item(self, category, name):
@@ -68,6 +64,20 @@ class VendingMachine:
                     break
         else:
             print(f"{name.capitalize()} not found in {category}.")
+        
+    def is_full(self):
+        total_items = len(self.items["snacks"]) + len(self.items["beverages"])
+        if total_items < 10:
+            return False
+        else:
+            return True
+        
+    def is_empty(self):
+        total_items = len(self.items["snacks"]) + len(self.items["beverages"])
+        if total_items > 0:
+            return False
+        else:
+            return True
 
 
 if __name__ == "__main__":
@@ -89,32 +99,58 @@ if __name__ == "__main__":
         choice = input("\nEnter choice: ")
 
         if choice == "1":
-            vending_machine.display_items()
+            if vending_machine.is_empty() == False:
+                vending_machine.display_items()
+            else:
+                print("\n\tThe vending machine is currently empty.")
 
         elif choice == "2":
-            category = input("Enter category (snacks/beverages): ")
-            while category.lower() != "snacks" and category.lower() != "beverages":
-                print("\n\tInvalid category. Please try again.")
-                category = input("\nEnter category (snacks/beverages): ")
-            name = input("Enter name: ")
-            price = float(input("Enter price: "))
-            attribute = "weight" if category == "snacks" else "volume"
-            vending_machine.add_item(category, name, price, attribute)
+            if vending_machine.is_full() == False:
+                category = input("Enter category (snacks/beverages): ")
+                while category.lower() != "snacks" and category.lower() != "beverages":
+                    print("\n\tInvalid category. Please try again.")
+                    category = input("\nEnter category (snacks/beverages): ")
+                attribute = "weight" if category == "snacks" else "volume"
+                name = input("Enter name: ")
+                while True:
+                    try:
+                        price = float(input("Enter price: "))
+                        break
+                    except ValueError:
+                        print("\n\tInvalid price. Please enter a number!")
+                while True:
+                    try:
+                        attribute_value = int(input(f"Enter {attribute}: "))
+                        break
+                    except ValueError:
+                        print(f"\n\tInvalid {attribute}. Please enter a number!")
+                vending_machine.add_item(category, name, price, attribute, attribute_value)
+            else:
+                print("\n\tThe vending machine is already full. Please remove an item before adding another one!")
 
         elif choice == "3":
-            category = input("Enter category (snacks/beverages): ")
-            name = input("Enter name: ")
-            vending_machine.remove_item(category, name)
+            if vending_machine.is_empty() == False:
+                category = input("Enter category (snacks/beverages): ")
+                name = input("Enter name: ")
+                vending_machine.remove_item(category, name)
+            else:
+                print("\n\tThe vending machine is already empty. Please add an item first!")
 
         elif choice == "4":
-            category = input("Enter category (snacks/beverages): ")
-            name = input("Enter name: ")
-            vending_machine.restock_item(category, name)
+            if vending_machine.is_empty() == False:
+                category = input("Enter category (snacks/beverages): ")
+                name = input("Enter name: ")
+                vending_machine.restock_item(category, name)
+            else:
+                print("\n\tThere are no items in the vending machine. Please add an item first!")
 
         elif choice == "5":
-            category = input("Enter category (snacks/beverages): ")
-            name = input("Enter name: ")
-            vending_machine.purchase_item(category, name)
+            if vending_machine.is_empty() == False:
+                category = input("Enter category (snacks/beverages): ")
+                name = input("Enter name: ")
+                vending_machine.purchase_item(category, name)
+            else: 
+                print("\n\tThere are no items in the vending machine. Please add an item first!")
 
         elif choice == "6":
             print("Exiting program.")
@@ -122,4 +158,3 @@ if __name__ == "__main__":
 
         else:
             print("\n\tInvalid choice. Please try again.")
-
